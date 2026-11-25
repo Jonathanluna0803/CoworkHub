@@ -1,0 +1,1333 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "CoWorkHub API",
+    "version": "1.0.0",
+    "description": "API REST de coworking. El documento completo generado por la aplicación está disponible en /v3/api-docs."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/auth/login": {
+      "post": {
+        "summary": "Login y obtención de JWT de 60 minutos",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Operación exitosa"
+          },
+          "400": {
+            "description": "Validación inválida"
+          },
+          "401": {
+            "description": "Autenticación inválida o faltante"
+          },
+          "403": {
+            "description": "Permisos insuficientes"
+          },
+          "404": {
+            "description": "Recurso no encontrado"
+          },
+          "409": {
+            "description": "Regla de negocio, duplicado o recurso relacionado"
+          }
+        }
+      }
+    },
+    "/auth/perfil": {
+      "get": {
+        "summary": "Perfil del usuario autenticado",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operación exitosa"
+          },
+          "400": {
+            "description": "Validación inválida"
+          },
+          "401": {
+            "description": "Autenticación inválida o faltante"
+          },
+          "403": {
+            "description": "Permisos insuficientes"
+          },
+          "404": {
+            "description": "Recurso no encontrado"
+          },
+          "409": {
+            "description": "Regla de negocio, duplicado o recurso relacionado"
+          }
+        }
+      }
+    },
+    "/actuator/health": {
+      "get": {
+        "summary": "Estado de salud de la aplicación",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Operación exitosa"
+          },
+          "400": {
+            "description": "Validación inválida"
+          },
+          "401": {
+            "description": "Autenticación inválida o faltante"
+          },
+          "403": {
+            "description": "Permisos insuficientes"
+          },
+          "404": {
+            "description": "Recurso no encontrado"
+          },
+          "409": {
+            "description": "Regla de negocio, duplicado o recurso relacionado"
+          }
+        }
+      }
+    },
+    "/api/sedes": {
+      "get": {
+        "summary": "Consultar o crear sedes",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operación exitosa"
+          },
+          "400": {
+            "description": "Validación inválida"
+          },
+          "401": {
+            "description": "Autenticación inválida o faltante"
+          },
+          "403": {
+            "description": "Permisos insuficientes"
+          },
+          "404": {
+            "description": "Recurso no encontrado"
+          },
+          "409": {
+            "description": "Regla de negocio, duplicado o recurso relacionado"
+          }
+        }
+      },
+      "post": {
+        "summary": "Consultar o crear sedes",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operación exitosa"
+          },
+          "400": {
+            "description": "Validación inválida"
+          },
+          "401": {
+            "description": "Autenticación inválida o faltante"
+          },
+          "403": {
+            "description": "Permisos insuficientes"
+          },
+          "404": {
+            "description": "Recurso no encontrado"
+          },
+          "409": {
+            "description": "Regla de negocio, duplicado o recurso relacionado"
+          }
+        }
+      }
+    },
+    "/api/sedes/{id}": {
+      "get": {
+        "summary": "Consultar, actualizar o eliminar recurso por ID",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operación exitosa"
+          },
+          "400": {
+            "description": "Validación inválida"
+          },
+          "401": {
+            "description": "Autenticación inválida o faltante"
+          },
+          "403": {
+            "description": "Permisos insuficientes"
+          },
+          "404": {
+            "description": "Recurso no encontrado"
+          },
+          "409": {
+            "description": "Regla de negocio, duplicado o recurso relacionado"
+          }
+        }
+      },
+      "put": {
+        "summary": "Consultar, actualizar o eliminar recurso por ID",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operación exitosa"
+          },
+          "400": {
+            "description": "Validación inválida"
+          },
+          "401": {
+            "description": "Autenticación inválida o faltante"
+          },
+          "403": {
+            "description": "Permisos insuficientes"
+          },
+          "404": {
+            "description": "Recurso no encontrado"
+          },
+          "409": {
+            "description": "Regla de negocio, duplicado o recurso relacionado"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Consultar, actualizar o eliminar recurso por ID",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operación exitosa"
+          },
+          "400": {
+            "description": "Validación inválida"
+          },
+          "401": {
+            "description": "Autenticación inválida o faltante"
+          },
+          "403": {
+            "description": "Permisos insuficientes"
+          },
+          "404": {
+            "description": "Recurso no encontrado"
+          },
+          "409": {
+            "description": "Regla de negocio, duplicado o recurso relacionado"
+          }
+        }
+      }
+    },
+    "/api/salas": {
+      "get": {
+        "summary": "Consultar o crear salas",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operación exitosa"
+          },
+          "400": {
+            "description": "Validación inválida"
+          },
+          "401": {
+            "description": "Autenticación inválida o faltante"
+          },
+          "403": {
+            "description": "Permisos insuficientes"
+          },
+          "404": {
+            "description": "Recurso no encontrado"
+          },
+          "409": {
+            "description": "Regla de negocio, duplicado o recurso relacionado"
+          }
+        }
+      },
+      "post": {
+        "summary": "Consultar o crear salas",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operación exitosa"
+          },
+          "400": {
+            "description": "Validación inválida"
+          },
+          "401": {
+            "description": "Autenticación inválida o faltante"
+          },
+          "403": {
+            "description": "Permisos insuficientes"
+          },
+          "404": {
+            "description": "Recurso no encontrado"
+          },
+          "409": {
+            "description": "Regla de negocio, duplicado o recurso relacionado"
+          }
+        }
+      }
+    },
+    "/api/salas/{id}": {
+      "get": {
+        "summary": "Consultar, actualizar o eliminar recurso por ID",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operación exitosa"
+          },
+          "400": {
+            "description": "Validación inválida"
+          },
+          "401": {
+            "description": "Autenticación inválida o faltante"
+          },
+          "403": {
+            "description": "Permisos insuficientes"
+          },
+          "404": {
+            "description": "Recurso no encontrado"
+          },
+          "409": {
+            "description": "Regla de negocio, duplicado o recurso relacionado"
+          }
+        }
+      },
+      "put": {
+        "summary": "Consultar, actualizar o eliminar recurso por ID",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operación exitosa"
+          },
+          "400": {
+            "description": "Validación inválida"
+          },
+          "401": {
+            "description": "Autenticación inválida o faltante"
+          },
+          "403": {
+            "description": "Permisos insuficientes"
+          },
+          "404": {
+            "description": "Recurso no encontrado"
+          },
+          "409": {
+            "description": "Regla de negocio, duplicado o recurso relacionado"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Consultar, actualizar o eliminar recurso por ID",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operación exitosa"
+          },
+          "400": {
+            "description": "Validación inválida"
+          },
+          "401": {
+            "description": "Autenticación inválida o faltante"
+          },
+          "403": {
+            "description": "Permisos insuficientes"
+          },
+          "404": {
+            "description": "Recurso no encontrado"
+          },
+          "409": {
+            "description": "Regla de negocio, duplicado o recurso relacionado"
+          }
+        }
+      }
+    },
+    "/api/equipamientos": {
+      "get": {
+        "summary": "Consultar o crear equipamientos",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operación exitosa"
+          },
+          "400": {
+            "description": "Validación inválida"
+          },
+          "401": {
+            "description": "Autenticación inválida o faltante"
+          },
+          "403": {
+            "description": "Permisos insuficientes"
+          },
+          "404": {
+            "description": "Recurso no encontrado"
+          },
+          "409": {
+            "description": "Regla de negocio, duplicado o recurso relacionado"
+          }
+        }
+      },
+      "post": {
+        "summary": "Consultar o crear equipamientos",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operación exitosa"
+          },
+          "400": {
+            "description": "Validación inválida"
+          },
+          "401": {
+            "description": "Autenticación inválida o faltante"
+          },
+          "403": {
+            "description": "Permisos insuficientes"
+          },
+          "404": {
+            "description": "Recurso no encontrado"
+          },
+          "409": {
+            "description": "Regla de negocio, duplicado o recurso relacionado"
+          }
+        }
+      }
+    },
+    "/api/equipamientos/{id}": {
+      "get": {
+        "summary": "Consultar, actualizar o eliminar recurso por ID",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operación exitosa"
+          },
+          "400": {
+            "description": "Validación inválida"
+          },
+          "401": {
+            "description": "Autenticación inválida o faltante"
+          },
+          "403": {
+            "description": "Permisos insuficientes"
+          },
+          "404": {
+            "description": "Recurso no encontrado"
+          },
+          "409": {
+            "description": "Regla de negocio, duplicado o recurso relacionado"
+          }
+        }
+      },
+      "put": {
+        "summary": "Consultar, actualizar o eliminar recurso por ID",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operación exitosa"
+          },
+          "400": {
+            "description": "Validación inválida"
+          },
+          "401": {
+            "description": "Autenticación inválida o faltante"
+          },
+          "403": {
+            "description": "Permisos insuficientes"
+          },
+          "404": {
+            "description": "Recurso no encontrado"
+          },
+          "409": {
+            "description": "Regla de negocio, duplicado o recurso relacionado"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Consultar, actualizar o eliminar recurso por ID",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operación exitosa"
+          },
+          "400": {
+            "description": "Validación inválida"
+          },
+          "401": {
+            "description": "Autenticación inválida o faltante"
+          },
+          "403": {
+            "description": "Permisos insuficientes"
+          },
+          "404": {
+            "description": "Recurso no encontrado"
+          },
+          "409": {
+            "description": "Regla de negocio, duplicado o recurso relacionado"
+          }
+        }
+      }
+    },
+    "/api/planes": {
+      "get": {
+        "summary": "Consultar o crear planes",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operación exitosa"
+          },
+          "400": {
+            "description": "Validación inválida"
+          },
+          "401": {
+            "description": "Autenticación inválida o faltante"
+          },
+          "403": {
+            "description": "Permisos insuficientes"
+          },
+          "404": {
+            "description": "Recurso no encontrado"
+          },
+          "409": {
+            "description": "Regla de negocio, duplicado o recurso relacionado"
+          }
+        }
+      },
+      "post": {
+        "summary": "Consultar o crear planes",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operación exitosa"
+          },
+          "400": {
+            "description": "Validación inválida"
+          },
+          "401": {
+            "description": "Autenticación inválida o faltante"
+          },
+          "403": {
+            "description": "Permisos insuficientes"
+          },
+          "404": {
+            "description": "Recurso no encontrado"
+          },
+          "409": {
+            "description": "Regla de negocio, duplicado o recurso relacionado"
+          }
+        }
+      }
+    },
+    "/api/planes/{id}": {
+      "get": {
+        "summary": "Consultar, actualizar o eliminar recurso por ID",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operación exitosa"
+          },
+          "400": {
+            "description": "Validación inválida"
+          },
+          "401": {
+            "description": "Autenticación inválida o faltante"
+          },
+          "403": {
+            "description": "Permisos insuficientes"
+          },
+          "404": {
+            "description": "Recurso no encontrado"
+          },
+          "409": {
+            "description": "Regla de negocio, duplicado o recurso relacionado"
+          }
+        }
+      },
+      "put": {
+        "summary": "Consultar, actualizar o eliminar recurso por ID",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operación exitosa"
+          },
+          "400": {
+            "description": "Validación inválida"
+          },
+          "401": {
+            "description": "Autenticación inválida o faltante"
+          },
+          "403": {
+            "description": "Permisos insuficientes"
+          },
+          "404": {
+            "description": "Recurso no encontrado"
+          },
+          "409": {
+            "description": "Regla de negocio, duplicado o recurso relacionado"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Consultar, actualizar o eliminar recurso por ID",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operación exitosa"
+          },
+          "400": {
+            "description": "Validación inválida"
+          },
+          "401": {
+            "description": "Autenticación inválida o faltante"
+          },
+          "403": {
+            "description": "Permisos insuficientes"
+          },
+          "404": {
+            "description": "Recurso no encontrado"
+          },
+          "409": {
+            "description": "Regla de negocio, duplicado o recurso relacionado"
+          }
+        }
+      }
+    },
+    "/api/servicios-adicionales": {
+      "get": {
+        "summary": "Consultar o crear servicios-adicionales",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operación exitosa"
+          },
+          "400": {
+            "description": "Validación inválida"
+          },
+          "401": {
+            "description": "Autenticación inválida o faltante"
+          },
+          "403": {
+            "description": "Permisos insuficientes"
+          },
+          "404": {
+            "description": "Recurso no encontrado"
+          },
+          "409": {
+            "description": "Regla de negocio, duplicado o recurso relacionado"
+          }
+        }
+      },
+      "post": {
+        "summary": "Consultar o crear servicios-adicionales",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operación exitosa"
+          },
+          "400": {
+            "description": "Validación inválida"
+          },
+          "401": {
+            "description": "Autenticación inválida o faltante"
+          },
+          "403": {
+            "description": "Permisos insuficientes"
+          },
+          "404": {
+            "description": "Recurso no encontrado"
+          },
+          "409": {
+            "description": "Regla de negocio, duplicado o recurso relacionado"
+          }
+        }
+      }
+    },
+    "/api/servicios-adicionales/{id}": {
+      "get": {
+        "summary": "Consultar, actualizar o eliminar recurso por ID",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operación exitosa"
+          },
+          "400": {
+            "description": "Validación inválida"
+          },
+          "401": {
+            "description": "Autenticación inválida o faltante"
+          },
+          "403": {
+            "description": "Permisos insuficientes"
+          },
+          "404": {
+            "description": "Recurso no encontrado"
+          },
+          "409": {
+            "description": "Regla de negocio, duplicado o recurso relacionado"
+          }
+        }
+      },
+      "put": {
+        "summary": "Consultar, actualizar o eliminar recurso por ID",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operación exitosa"
+          },
+          "400": {
+            "description": "Validación inválida"
+          },
+          "401": {
+            "description": "Autenticación inválida o faltante"
+          },
+          "403": {
+            "description": "Permisos insuficientes"
+          },
+          "404": {
+            "description": "Recurso no encontrado"
+          },
+          "409": {
+            "description": "Regla de negocio, duplicado o recurso relacionado"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Consultar, actualizar o eliminar recurso por ID",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operación exitosa"
+          },
+          "400": {
+            "description": "Validación inválida"
+          },
+          "401": {
+            "description": "Autenticación inválida o faltante"
+          },
+          "403": {
+            "description": "Permisos insuficientes"
+          },
+          "404": {
+            "description": "Recurso no encontrado"
+          },
+          "409": {
+            "description": "Regla de negocio, duplicado o recurso relacionado"
+          }
+        }
+      }
+    },
+    "/api/miembros": {
+      "get": {
+        "summary": "Consultar o registrar miembros",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operación exitosa"
+          },
+          "400": {
+            "description": "Validación inválida"
+          },
+          "401": {
+            "description": "Autenticación inválida o faltante"
+          },
+          "403": {
+            "description": "Permisos insuficientes"
+          },
+          "404": {
+            "description": "Recurso no encontrado"
+          },
+          "409": {
+            "description": "Regla de negocio, duplicado o recurso relacionado"
+          }
+        }
+      },
+      "post": {
+        "summary": "Consultar o registrar miembros",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operación exitosa"
+          },
+          "400": {
+            "description": "Validación inválida"
+          },
+          "401": {
+            "description": "Autenticación inválida o faltante"
+          },
+          "403": {
+            "description": "Permisos insuficientes"
+          },
+          "404": {
+            "description": "Recurso no encontrado"
+          },
+          "409": {
+            "description": "Regla de negocio, duplicado o recurso relacionado"
+          }
+        }
+      }
+    },
+    "/api/miembros/{id}": {
+      "get": {
+        "summary": "Consultar, actualizar o eliminar miembro",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operación exitosa"
+          },
+          "400": {
+            "description": "Validación inválida"
+          },
+          "401": {
+            "description": "Autenticación inválida o faltante"
+          },
+          "403": {
+            "description": "Permisos insuficientes"
+          },
+          "404": {
+            "description": "Recurso no encontrado"
+          },
+          "409": {
+            "description": "Regla de negocio, duplicado o recurso relacionado"
+          }
+        }
+      },
+      "put": {
+        "summary": "Consultar, actualizar o eliminar miembro",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operación exitosa"
+          },
+          "400": {
+            "description": "Validación inválida"
+          },
+          "401": {
+            "description": "Autenticación inválida o faltante"
+          },
+          "403": {
+            "description": "Permisos insuficientes"
+          },
+          "404": {
+            "description": "Recurso no encontrado"
+          },
+          "409": {
+            "description": "Regla de negocio, duplicado o recurso relacionado"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Consultar, actualizar o eliminar miembro",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operación exitosa"
+          },
+          "400": {
+            "description": "Validación inválida"
+          },
+          "401": {
+            "description": "Autenticación inválida o faltante"
+          },
+          "403": {
+            "description": "Permisos insuficientes"
+          },
+          "404": {
+            "description": "Recurso no encontrado"
+          },
+          "409": {
+            "description": "Regla de negocio, duplicado o recurso relacionado"
+          }
+        }
+      }
+    },
+    "/api/miembros/{id}/suspender": {
+      "patch": {
+        "summary": "Suspender miembro",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operación exitosa"
+          },
+          "400": {
+            "description": "Validación inválida"
+          },
+          "401": {
+            "description": "Autenticación inválida o faltante"
+          },
+          "403": {
+            "description": "Permisos insuficientes"
+          },
+          "404": {
+            "description": "Recurso no encontrado"
+          },
+          "409": {
+            "description": "Regla de negocio, duplicado o recurso relacionado"
+          }
+        }
+      }
+    },
+    "/api/miembros/{id}/activar": {
+      "patch": {
+        "summary": "Activar miembro",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operación exitosa"
+          },
+          "400": {
+            "description": "Validación inválida"
+          },
+          "401": {
+            "description": "Autenticación inválida o faltante"
+          },
+          "403": {
+            "description": "Permisos insuficientes"
+          },
+          "404": {
+            "description": "Recurso no encontrado"
+          },
+          "409": {
+            "description": "Regla de negocio, duplicado o recurso relacionado"
+          }
+        }
+      }
+    },
+    "/api/miembros/{id}/consumo": {
+      "get": {
+        "summary": "Consultar consumo mensual del miembro",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operación exitosa"
+          },
+          "400": {
+            "description": "Validación inválida"
+          },
+          "401": {
+            "description": "Autenticación inválida o faltante"
+          },
+          "403": {
+            "description": "Permisos insuficientes"
+          },
+          "404": {
+            "description": "Recurso no encontrado"
+          },
+          "409": {
+            "description": "Regla de negocio, duplicado o recurso relacionado"
+          }
+        }
+      }
+    },
+    "/api/disponibilidad": {
+      "get": {
+        "summary": "Consultar salas libres por sede, fecha, hora, capacidad y equipamiento",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operación exitosa"
+          },
+          "400": {
+            "description": "Validación inválida"
+          },
+          "401": {
+            "description": "Autenticación inválida o faltante"
+          },
+          "403": {
+            "description": "Permisos insuficientes"
+          },
+          "404": {
+            "description": "Recurso no encontrado"
+          },
+          "409": {
+            "description": "Regla de negocio, duplicado o recurso relacionado"
+          }
+        }
+      }
+    },
+    "/api/reservas": {
+      "get": {
+        "summary": "Consultar o crear reserva",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operación exitosa"
+          },
+          "400": {
+            "description": "Validación inválida"
+          },
+          "401": {
+            "description": "Autenticación inválida o faltante"
+          },
+          "403": {
+            "description": "Permisos insuficientes"
+          },
+          "404": {
+            "description": "Recurso no encontrado"
+          },
+          "409": {
+            "description": "Regla de negocio, duplicado o recurso relacionado"
+          }
+        }
+      },
+      "post": {
+        "summary": "Consultar o crear reserva",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operación exitosa"
+          },
+          "400": {
+            "description": "Validación inválida"
+          },
+          "401": {
+            "description": "Autenticación inválida o faltante"
+          },
+          "403": {
+            "description": "Permisos insuficientes"
+          },
+          "404": {
+            "description": "Recurso no encontrado"
+          },
+          "409": {
+            "description": "Regla de negocio, duplicado o recurso relacionado"
+          }
+        }
+      }
+    },
+    "/api/reservas/{id}": {
+      "get": {
+        "summary": "Consultar reserva",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operación exitosa"
+          },
+          "400": {
+            "description": "Validación inválida"
+          },
+          "401": {
+            "description": "Autenticación inválida o faltante"
+          },
+          "403": {
+            "description": "Permisos insuficientes"
+          },
+          "404": {
+            "description": "Recurso no encontrado"
+          },
+          "409": {
+            "description": "Regla de negocio, duplicado o recurso relacionado"
+          }
+        }
+      }
+    },
+    "/api/reservas/{id}/servicios": {
+      "post": {
+        "summary": "Agregar servicios a reserva PENDING",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operación exitosa"
+          },
+          "400": {
+            "description": "Validación inválida"
+          },
+          "401": {
+            "description": "Autenticación inválida o faltante"
+          },
+          "403": {
+            "description": "Permisos insuficientes"
+          },
+          "404": {
+            "description": "Recurso no encontrado"
+          },
+          "409": {
+            "description": "Regla de negocio, duplicado o recurso relacionado"
+          }
+        }
+      }
+    },
+    "/api/reservas/{id}/servicios/{servicioId}": {
+      "delete": {
+        "summary": "Retirar servicio de reserva PENDING",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operación exitosa"
+          },
+          "400": {
+            "description": "Validación inválida"
+          },
+          "401": {
+            "description": "Autenticación inválida o faltante"
+          },
+          "403": {
+            "description": "Permisos insuficientes"
+          },
+          "404": {
+            "description": "Recurso no encontrado"
+          },
+          "409": {
+            "description": "Regla de negocio, duplicado o recurso relacionado"
+          }
+        }
+      }
+    },
+    "/api/reservas/{id}/confirmar": {
+      "post": {
+        "summary": "Confirmar reserva PENDING",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operación exitosa"
+          },
+          "400": {
+            "description": "Validación inválida"
+          },
+          "401": {
+            "description": "Autenticación inválida o faltante"
+          },
+          "403": {
+            "description": "Permisos insuficientes"
+          },
+          "404": {
+            "description": "Recurso no encontrado"
+          },
+          "409": {
+            "description": "Regla de negocio, duplicado o recurso relacionado"
+          }
+        }
+      }
+    },
+    "/api/reservas/{id}/cancelar": {
+      "post": {
+        "summary": "Cancelar reserva y calcular cargo",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operación exitosa"
+          },
+          "400": {
+            "description": "Validación inválida"
+          },
+          "401": {
+            "description": "Autenticación inválida o faltante"
+          },
+          "403": {
+            "description": "Permisos insuficientes"
+          },
+          "404": {
+            "description": "Recurso no encontrado"
+          },
+          "409": {
+            "description": "Regla de negocio, duplicado o recurso relacionado"
+          }
+        }
+      }
+    },
+    "/api/reservas/{id}/completar": {
+      "post": {
+        "summary": "Completar reserva CONFIRMED",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operación exitosa"
+          },
+          "400": {
+            "description": "Validación inválida"
+          },
+          "401": {
+            "description": "Autenticación inválida o faltante"
+          },
+          "403": {
+            "description": "Permisos insuficientes"
+          },
+          "404": {
+            "description": "Recurso no encontrado"
+          },
+          "409": {
+            "description": "Regla de negocio, duplicado o recurso relacionado"
+          }
+        }
+      }
+    }
+  }
+}
