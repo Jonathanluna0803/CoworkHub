@@ -1,0 +1,12 @@
+package com.coworkhub.exception;
+import org.springframework.web.bind.annotation.*;import org.springframework.http.*;import org.springframework.dao.DataIntegrityViolationException;import java.time.Instant;import java.util.*;
+@RestControllerAdvice public class ApiExceptionHandler {private Map<String,Object> body(String error,String code){return Map.of("error",error,"codigo",code,"timestamp",Instant.now().toString());}
+ @ExceptionHandler(NoSuchElementException.class)public ResponseEntity<?> notFound(NoSuchElementException e){return ResponseEntity.status(404).body(body("Recurso no encontrado","NOT_FOUND"));}
+ @ExceptionHandler(IllegalStateException.class)public ResponseEntity<?> conflict(IllegalStateException e){return ResponseEntity.status(409).body(body(e.getMessage()==null?"Conflicto de negocio":e.getMessage(),"BUSINESS_RULE"));}
+ @ExceptionHandler(DataIntegrityViolationException.class)public ResponseEntity<?> integrity(DataIntegrityViolationException e){return ResponseEntity.status(409).body(body("No se puede guardar: existe un duplicado o el recurso está relacionado con otros datos (RN-11/RN-12)","DATA_CONFLICT"));}
+ @ExceptionHandler(org.springframework.web.bind.MethodArgumentNotValidException.class)public ResponseEntity<?> validation(org.springframework.web.bind.MethodArgumentNotValidException e){return ResponseEntity.status(400).body(body("Datos de entrada inválidos o faltantes","VALIDATION"));}
+ @ExceptionHandler(org.springframework.http.converter.HttpMessageNotReadableException.class)public ResponseEntity<?> unreadable(Exception e){return ResponseEntity.status(400).body(body("JSON inválido o campos con formato incorrecto","BAD_REQUEST"));}
+ @ExceptionHandler(jakarta.validation.ConstraintViolationException.class)public ResponseEntity<?> constraint(Exception e){return ResponseEntity.status(400).body(body("Parámetros inválidos","VALIDATION"));}
+ @ExceptionHandler(IllegalArgumentException.class)public ResponseEntity<?> bad(IllegalArgumentException e){return ResponseEntity.status(400).body(body(e.getMessage()==null?"Solicitud inválida":e.getMessage(),"BAD_REQUEST"));}
+ @ExceptionHandler(org.springframework.security.access.AccessDeniedException.class)public ResponseEntity<?> forbidden(Exception e){return ResponseEntity.status(403).body(body("No tiene permiso para realizar esta operación","FORBIDDEN"));}
+ @ExceptionHandler(Exception.class)public ResponseEntity<?> unexpected(Exception e){return ResponseEntity.status(500).body(body("Error interno del servidor","INTERNAL_ERROR"));}}
