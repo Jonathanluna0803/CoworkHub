@@ -1,0 +1,976 @@
+{
+  "info": {
+    "name": "CoWorkHub - 14 escenarios de aceptación",
+    "description": "Primero ejecutar los tres prerequisitos de autenticación y salud. Los escenarios usan variables de entorno. Para escenario 13, enviar el escenario 1 y el 13 de forma concurrente con la misma sala/hora: una solicitud debe ganar (201) y la otra recibir 409. En ejecución secuencial, el escenario 13 espera 409 porque el escenario 1 ya creó esa reserva.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "adminToken",
+      "value": ""
+    },
+    {
+      "key": "memberToken",
+      "value": ""
+    },
+    {
+      "key": "futureDate",
+      "value": ""
+    },
+    {
+      "key": "bookingId",
+      "value": ""
+    },
+    {
+      "key": "cancel30",
+      "value": ""
+    },
+    {
+      "key": "cancel30End",
+      "value": ""
+    },
+    {
+      "key": "cancel30BookingId",
+      "value": ""
+    },
+    {
+      "key": "cancel5",
+      "value": ""
+    },
+    {
+      "key": "cancel5End",
+      "value": ""
+    },
+    {
+      "key": "cancel5BookingId",
+      "value": ""
+    },
+    {
+      "key": "cancel90",
+      "value": ""
+    },
+    {
+      "key": "cancel90End",
+      "value": ""
+    },
+    {
+      "key": "cancel90BookingId",
+      "value": ""
+    },
+    {
+      "key": "adjacentBookingId",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Prerequisito - Login admin",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8080/auth/login",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "auth",
+            "login"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"username\": \"admin\", \"password\": \"password\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status esperado 200\", () => pm.response.to.have.status(200));",
+              "pm.environment.set(\"adminToken\",pm.response.json().token);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Prerequisito - Login miembro Ana",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8080/auth/login",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "auth",
+            "login"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"username\": \"ana\", \"password\": \"password\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status esperado 200\", () => pm.response.to.have.status(200));",
+              "pm.environment.set(\"memberToken\",pm.response.json().token);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Prerequisito - Salud",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/actuator/health",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "actuator",
+            "health"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status esperado 200\", () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Escenario 1 - Reserva con dos servicios (201)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{adminToken}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8080/api/reservas",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "reservas"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"roomId\": 1, \"memberId\": 1, \"startTime\": \"{{futureDate}}T16:00:00\", \"endTime\": \"{{futureDate}}T17:00:00\", \"attendees\": 4, \"services\": [{\"serviceId\": 1, \"quantity\": 1}, {\"serviceId\": 2, \"quantity\": 1}]}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const d=new Date(Date.now()+7*86400000); const parts=new Intl.DateTimeFormat('en-CA',{timeZone:'America/Bogota',year:'numeric',month:'2-digit',day:'2-digit'}).format(d); pm.environment.set('futureDate',parts);"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status esperado 201\", () => pm.response.to.have.status(201));",
+              "pm.environment.set(\"bookingId\",pm.response.json().id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Escenario 2 - Reserva solapada (409)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{adminToken}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8080/api/reservas",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "reservas"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"roomId\": 1, \"memberId\": 2, \"startTime\": \"{{futureDate}}T16:00:00\", \"endTime\": \"{{futureDate}}T17:00:00\", \"attendees\": 2}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status esperado 409\", () => pm.response.to.have.status(409));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Escenario 3 - Reserva contigua (201)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{adminToken}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8080/api/reservas",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "reservas"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"roomId\": 1, \"memberId\": 2, \"startTime\": \"{{futureDate}}T17:00:00\", \"endTime\": \"{{futureDate}}T18:00:00\", \"attendees\": 2}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status esperado 201\", () => pm.response.to.have.status(201));",
+              "pm.environment.set(\"adjacentBookingId\",pm.response.json().id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Escenario 4 - Duración de 45 minutos (409)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{adminToken}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8080/api/reservas",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "reservas"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"roomId\": 2, \"memberId\": 1, \"startTime\": \"{{futureDate}}T18:00:00\", \"endTime\": \"{{futureDate}}T18:45:00\", \"attendees\": 2}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status esperado 409\", () => pm.response.to.have.status(409));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Escenario 5 - Cancelación con 30h o más (cargo 0)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{adminToken}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8080/api/reservas",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "reservas"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"roomId\": 3, \"memberId\": 3, \"startTime\": \"{{cancel30}}\", \"endTime\": \"{{cancel30End}}\", \"attendees\": 2}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const s=new Date(Date.now()+30*3600000); const e=new Date(Date.now()+31*3600000); const f=(d)=>new Intl.DateTimeFormat('en-CA',{timeZone:'America/Bogota',year:'numeric',month:'2-digit',day:'2-digit'}).format(d); const t=(d)=>new Intl.DateTimeFormat('en-GB',{timeZone:'America/Bogota',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(d); pm.environment.set('cancel30',f(s)+'T'+t(s)+':00'); pm.environment.set('cancel30End',f(e)+'T'+t(e)+':00');"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status esperado 201\", () => pm.response.to.have.status(201));",
+              "pm.environment.set(\"cancel30BookingId\",pm.response.json().id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Escenario 5b - Cancelar reserva 30h",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{adminToken}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8080/api/reservas/{{cancel30BookingId}}/cancelar",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "reservas",
+            "{{cancel30BookingId}}",
+            "cancelar"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status esperado 200\", () => pm.response.to.have.status(200));",
+              "pm.test(\"Cargo cero\",()=>pm.response.json().cancellationFee===0);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Escenario 6 - Crear reserva 5h para cancelación",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{adminToken}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8080/api/reservas",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "reservas"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"roomId\": 3, \"memberId\": 5, \"startTime\": \"{{cancel5}}\", \"endTime\": \"{{cancel5End}}\", \"attendees\": 2}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const s=new Date(Date.now()+5*3600000); const e=new Date(Date.now()+6*3600000); const f=(d)=>new Intl.DateTimeFormat('en-CA',{timeZone:'America/Bogota',year:'numeric',month:'2-digit',day:'2-digit'}).format(d); const t=(d)=>new Intl.DateTimeFormat('en-GB',{timeZone:'America/Bogota',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(d); pm.environment.set('cancel5',f(s)+'T'+t(s)+':00'); pm.environment.set('cancel5End',f(e)+'T'+t(e)+':00');"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status esperado 201\", () => pm.response.to.have.status(201));",
+              "pm.environment.set(\"cancel5BookingId\",pm.response.json().id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Escenario 6b - Cancelar con 5h (cargo 50%)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{adminToken}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8080/api/reservas/{{cancel5BookingId}}/cancelar",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "reservas",
+            "{{cancel5BookingId}}",
+            "cancelar"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status esperado 200\", () => pm.response.to.have.status(200));",
+              "pm.test(\"Cargo del 50%\",()=>pm.response.json().cancellationFee===pm.response.json().roomCost*0.5);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Escenario 7 - Crear reserva para cancelación 1h30",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{adminToken}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8080/api/reservas",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "reservas"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"roomId\": 3, \"memberId\": 3, \"startTime\": \"{{cancel90}}\", \"endTime\": \"{{cancel90End}}\", \"attendees\": 1}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const s=new Date(Date.now()+1.5*3600000); const e=new Date(Date.now()+2.5*3600000); const f=(d)=>new Intl.DateTimeFormat('en-CA',{timeZone:'America/Bogota',year:'numeric',month:'2-digit',day:'2-digit'}).format(d); const t=(d)=>new Intl.DateTimeFormat('en-GB',{timeZone:'America/Bogota',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(d); pm.environment.set('cancel90',f(s)+'T'+t(s)+':00'); pm.environment.set('cancel90End',f(e)+'T'+t(e)+':00');"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status esperado 201\", () => pm.response.to.have.status(201));",
+              "pm.environment.set(\"cancel90BookingId\",pm.response.json().id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Escenario 7b - Cancelar con menos de 2h (409)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{adminToken}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8080/api/reservas/{{cancel90BookingId}}/cancelar",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "reservas",
+            "{{cancel90BookingId}}",
+            "cancelar"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status esperado 409\", () => pm.response.to.have.status(409));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Escenario 8 - Confirmar reserva cancelada (409)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{adminToken}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8080/api/reservas/{{cancel30BookingId}}/confirmar",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "reservas",
+            "{{cancel30BookingId}}",
+            "confirmar"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status esperado 409\", () => pm.response.to.have.status(409));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Escenario 9 - Ana intenta ver reserva de Luis (403)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{memberToken}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8080/api/reservas/2",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "reservas",
+            "2"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status esperado 403\", () => pm.response.to.have.status(403));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Escenario 10 - Endpoint sin JWT (401)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/sedes",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "sedes"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status esperado 401\", () => pm.response.to.have.status(401));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Escenario 11 - Eliminar sala con reservas (409)",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{adminToken}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8080/api/salas/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "salas",
+            "1"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status esperado 409\", () => pm.response.to.have.status(409));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Escenario 12 - Crear sede sin nombre (400)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{adminToken}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8080/api/sedes",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "sedes"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"city\": \"Bogota\", \"address\": \"Prueba\", \"openingTime\": \"08:00:00\", \"closingTime\": \"18:00:00\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status esperado 400\", () => pm.response.to.have.status(400));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Escenario 13 - Segunda reserva concurrente (409)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{adminToken}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8080/api/reservas",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "reservas"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\"roomId\": 1, \"memberId\": 5, \"startTime\": \"{{futureDate}}T16:00:00\", \"endTime\": \"{{futureDate}}T17:00:00\", \"attendees\": 1}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "description": "Ejecutar simultáneamente con el escenario 1 para validar el bloqueo por sala. Si se ejecuta después, debe responder 409 por el solapamiento."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status esperado 409\", () => pm.response.to.have.status(409));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Escenario 14 - Filtrar miembros suspendidos",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{adminToken}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8080/api/miembros?estado=SUSPENDED",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "miembros"
+          ]
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status esperado 200\", () => pm.response.to.have.status(200));",
+              "pm.test(\"Todos están suspendidos\",()=>pm.response.json().every(m=>m.status===\"SUSPENDED\"));"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
