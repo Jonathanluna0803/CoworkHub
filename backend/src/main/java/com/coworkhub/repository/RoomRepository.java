@@ -1,0 +1,3 @@
+package com.coworkhub.repository;
+import com.coworkhub.entity.Room;import org.springframework.data.jpa.repository.JpaRepository;import org.springframework.data.jpa.repository.Lock;import org.springframework.data.jpa.repository.Query;import org.springframework.data.repository.query.Param;import org.springframework.data.jpa.repository.EntityGraph;import jakarta.persistence.LockModeType;import java.util.*;
+public interface RoomRepository extends JpaRepository<Room,Long>{@Lock(LockModeType.PESSIMISTIC_WRITE) @Query("select r from Room r where r.id=:id") Optional<Room> findLockedById(@Param("id") Long id);@EntityGraph(attributePaths={"location","equipment"}) @Query("select distinct r from Room r") List<Room> findAllWithDetails();}
