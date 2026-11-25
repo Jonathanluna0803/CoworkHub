@@ -1,0 +1,3 @@
+package com.coworkhub.entity;
+import jakarta.persistence.*;
+@Entity @Table(name="membership_plans",uniqueConstraints=@UniqueConstraint(columnNames="name")) public class MembershipPlan { @Id @GeneratedValue(strategy=GenerationType.IDENTITY) public Long id; @Column(nullable=false,unique=true) @jakarta.validation.constraints.NotBlank public String name; @jakarta.validation.constraints.PositiveOrZero public int includedHoursPerMonth; @jakarta.validation.constraints.Min(0) @jakarta.validation.constraints.Max(100) public int overageDiscount; @jakarta.validation.constraints.Positive public int maxActiveBookings; public MembershipPlan(){} }

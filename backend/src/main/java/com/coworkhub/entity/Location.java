@@ -1,0 +1,3 @@
+package com.coworkhub.entity;
+import jakarta.persistence.*;import java.time.LocalTime;import java.util.*;
+@Entity @Table(name="locations") public class Location { @Id @GeneratedValue(strategy=GenerationType.IDENTITY) public Long id; @Column(nullable=false) @jakarta.validation.constraints.NotBlank public String name; @Column(nullable=false) @jakarta.validation.constraints.NotBlank public String city; public String address; @jakarta.validation.constraints.NotNull public LocalTime openingTime=LocalTime.of(8,0); @jakarta.validation.constraints.NotNull public LocalTime closingTime=LocalTime.of(20,0); @com.fasterxml.jackson.annotation.JsonIgnore @OneToMany(mappedBy="location") public List<Room> rooms=new ArrayList<>(); public Location(){} }
