@@ -1,0 +1,26 @@
+# Local secrets and environment overrides
+.env
+.env.*
+!.env.example
+*.local
+
+# Java / Maven builds
+**/target/
+*.class
+
+# Node / frontend tooling
+**/node_modules/
+**/coverage/
+
+# Local databases, Docker data, and logs
+data/
+mysql-data/
+*.sqlitedb
+*.log
+
+# IDE and operating system files
+.idea/
+.vscode/*
+!.vscode/extensions.json
+.DS_Store
+Thumbs.db
